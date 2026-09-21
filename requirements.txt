@@ -1,0 +1,10 @@
+craftax>=1.6.1
+jax>=0.4.38
+typesafe-sdk>=0.7.0
+openai>=3.16
+python-dotenv>=1.2
+numpy>=2.0
+pillow>=12.0
+fastapi>=0.141
+uvicorn[standard]>=0.53
+websockets>=17.0

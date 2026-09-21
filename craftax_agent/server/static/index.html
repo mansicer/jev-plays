@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Craftax Agent Engine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef1ec; --surface: #ffffff; --surface-2: #e3e8e0; --text: #1b2420; --muted: #5c6b62;
+    --line: #d2dacf; --accent: #2f7d32; --accent-ink: #ffffff; --reward: #d98a1c; --reward-soft: #f8e8cf;
+    --noop: #b8c2b9; --focus: #1d5fbf; --danger: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141916; --surface: #1c231e; --surface-2: #232c26; --text: #e6ebe4; --muted: #93a096;
+      --line: #2b352e; --accent: #6fcf73; --accent-ink: #0f1a11; --reward: #f0b35a; --reward-soft: #3a2f1c;
+      --noop: #3b463e; --focus: #7fb3ff; --danger: #ff8a80; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: "Source Sans 3", system-ui, sans-serif; font-size: 15px; line-height: 1.45; padding: 16px; }
+  .wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 16px; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+  h1 { font-family: "Pixelify Sans", sans-serif; font-weight: 700; font-size: 28px; margin: 0; }
+  .status { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .status.running { border-color: var(--accent); color: var(--accent); }
+  .status.error { border-color: var(--danger); color: var(--danger); }
+  .meta { margin-left: auto; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12.5px; }
+  .meta b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stage { display: grid; grid-template-columns: minmax(300px, 400px) 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 820px) { .stage { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 10px; }
+  .screen img { width: 100%; image-rendering: pixelated; border-radius: 3px; background: #000; display: block; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+  button, select, input[type=number] { font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 6px 12px; }
+  button { font-weight: 600; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button:disabled { opacity: .45; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  button.danger { color: var(--danger); border-color: var(--danger); background: transparent; padding: 3px 10px; font-size: 12.5px; }
+  button.danger:hover { background: var(--danger); color: var(--surface); }
+  input[type=number] { width: 80px; font-family: "IBM Plex Mono", monospace; }
+  input[type=range] { flex: 1; accent-color: var(--accent); min-width: 100px; }
+  .actions { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 5px; }
+  .actions button { font-size: 12.5px; font-weight: 500; padding: 5px 6px; text-align: left; font-family: "IBM Plex Mono", monospace; }
+  .actions button kbd { float: right; color: var(--muted); font-size: 11px; font-family: inherit; }
+  .actions button.legal { border-color: var(--accent); }
+  .eyebrow { font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .headline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .action { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 18px; padding: 3px 10px; border-radius: 4px; background: var(--surface-2); }
+  .pill { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .pill.reward { background: var(--reward-soft); color: var(--text); border-color: transparent; font-weight: 500; }
+  pre { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; background: var(--surface-2); border-radius: 4px; padding: 10px 12px; max-height: 320px; overflow: auto; }
+  details summary { cursor: pointer; font-weight: 600; }
+  details pre { margin-top: 8px; }
+  .timeline { display: flex; flex-wrap: wrap; gap: 3px; }
+  .cell { width: 12px; height: 18px; border-radius: 2px; background: var(--noop); }
+  .cell.reward { background: var(--reward); }
+  .cell.move { background: var(--accent); opacity: .5; }
+  .cell.do { background: var(--accent); }
+  .log { max-height: 260px; overflow: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px; display: grid; gap: 2px; }
+  .log div { display: grid; grid-template-columns: 40px 1fr 60px 40px 60px; gap: 8px; padding: 2px 6px; border-radius: 3px; }
+  .log div:nth-child(odd) { background: var(--surface-2); }
+  .log .r { color: var(--reward); font-weight: 500; }
+  .hint { color: var(--muted); font-size: 12.5px; }
+  .opt { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 6px 10px; }
+  .opt label { line-height: 1.2; }
+  .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .seg button { font-size: 13px; font-weight: 500; padding: 5px 11px; border-radius: 999px; background: transparent; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+  .seg button small { color: inherit; opacity: .7; font-weight: 400; }
+  .seg button[aria-pressed="true"] small { opacity: .85; }
+  .sub { border-top: 1px dashed var(--line); padding-top: 8px; }
+  .sub .eyebrow { grid-column: 1 / -1; }
+  [hidden] { display: none !important; }
+  pre.notes { max-height: 180px; border-left: 3px solid var(--reward); }
+  .progress { display: flex; gap: 2px; height: 8px; }
+  .progress i { flex: 1; border-radius: 2px; background: var(--noop); }
+  .progress i.done { background: var(--reward); }
+  .progress i.open { background: var(--accent); opacity: .55; }
+  .goals { display: grid; gap: 4px; font-size: 13.5px; }
+  .goals div { display: grid; grid-template-columns: 18px 1fr; gap: 8px; padding: 4px 8px; border-radius: 4px; background: var(--surface-2); }
+  .goals .mk { font-family: "IBM Plex Mono", monospace; font-weight: 500; }
+  .goals .ready .mk { color: var(--accent); }
+  .goals .blocked .mk, .goals .blocked .t { color: var(--muted); }
+  .goals .t b { font-weight: 600; }
+  .goals .t small { color: var(--muted); display: block; }
+  .goals.side { margin-top: 8px; }
+  .urgent { border-left: 3px solid var(--danger); background: var(--surface-2); padding: 6px 10px; border-radius: 4px; font-size: 13px; margin-bottom: 6px; font-family: "IBM Plex Mono", monospace; }
+  .goals .t small .ok { color: var(--accent); }
+  .goals .t small .no { color: var(--danger); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--sw); opacity: var(--op, 1); }
+  .cell { cursor: pointer; }
+  .cell:hover, .cell.hover { outline: 2px solid var(--text); outline-offset: 1px; }
+  #tip { position: fixed; z-index: 10; pointer-events: none; display: none; max-width: 300px; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+  #tip.show { display: block; }
+  #tip .a { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 13.5px; }
+  #tip .r { color: var(--reward); font-weight: 600; }
+  #tip ul { margin: 4px 0 0; padding-left: 16px; }
+  #tip .m { color: var(--muted); }
+  .tokens { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; }
+  .tokens .k { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+  .tokens .v { font-variant-numeric: tabular-nums; }
+  .tokens .v b { font-weight: 500; }
+  .tokens .v small { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Craftax Agent Engine</h1>
+    <span class="status" id="status">connecting…</span>
+    <button id="resetAll" class="danger" title="Reset the environment and clear all token statistics for this session">Reset all</button>
+    <div class="meta">
+      <span>run <b id="mRun" title="craftax_agent/runs/<run id>">—</b></span>
+      <span>model <b id="mModel">—</b></span><span>seed <b id="mSeed">0</b></span>
+      <span>step <b id="mStep">0</b></span><span>reward <b id="mReward">0.0</b></span>
+      <span>env <b id="mEnv">—</b></span>
+      <span>score <b id="mScore">0</b><small id="mScoreMax">/226</small></span>
+      <span>achievements <b id="mAch">0</b><small id="mAchMax">/67</small></span>
+    </div>
+    <div class="tokens" id="tokens" style="flex-basis:100%"></div>
+  </header>
+
+  <div class="stage">
+    <div style="display:grid;gap:16px">
+      <section class="card screen">
+        <img id="frame" alt="Live player view">
+        <div class="row">
+          <button id="start" class="primary">Start</button>
+          <button id="pause">Pause</button>
+          <button id="stepBtn">Step</button>
+          <span style="margin-left:auto" class="row">
+            <label for="seed">seed</label><input id="seed" type="number" value="0" min="0">
+            <button id="reset">Reset</button>
+          </span>
+        </div>
+        <div class="opt">
+          <label>env</label>
+          <div class="seg" id="variant" title="Switching rebuilds the environment (≈60 s JIT) and clears session statistics">
+            <button data-v="classic">Craftax-Classic <small>22 ach</small></button>
+            <button data-v="full">Craftax <small>9 floors · 67 ach</small></button>
+          </div>
+          <label>policy</label>
+          <div class="seg" id="policy">
+            <button data-v="llm" title="One LLM call per step (model from .env)">LLM</button>
+            <button data-v="jev_macro" title="jev picks from a code-built candidate table">Jev-Macro</button>
+            <button data-v="jev_action_map" title="jev picks a primitive action, Do renamed by its target">Jev-Action-Map</button>
+            <button data-v="jev_action_sim" title="jev picks a primitive action with its simulated outcome">Jev-Action-Sim</button>
+            <button data-v="random" title="uniform over legal actions">random</button>
+            <button data-v="manual" title="you play with the keyboard">manual</button>
+          </div>
+          <label for="delay">delay</label>
+          <span class="row"><input id="delay" type="range" min="0" max="2" step="0.1" value="0"><span class="pill" id="delayVal">0.0 s</span></span>
+        </div>
+        <div class="opt sub" id="llmOpts" hidden>
+          <div class="eyebrow" id="llmOptsTitle">LLM options</div>
+          <label>memory</label>
+          <div class="seg" id="histN" title="How many previous (observation, reply) turns are replayed to the model each step">
+            <button data-v="0">none</button><button data-v="3">last 3 turns</button><button data-v="5">last 5 turns</button><button data-v="10">last 10 turns</button>
+          </div>
+          <label>scratchpad</label>
+          <div class="seg" id="scratch" title="The model rewrites private notes each turn; they are fed back next turn">
+            <button data-v="1">on</button><button data-v="0">off</button>
+          </div>
+          <label id="goalsLabel">goal board</label>
+          <div class="seg" id="goalsOn" title="Inject the code-maintained achievement board and status notes into the observation">
+            <button data-v="1">on</button><button data-v="0">off</button>
+          </div>
+        </div>
+        <div class="opt sub" id="jevOpts" hidden>
+          <div class="eyebrow">Jev options</div>
+          <label>LLM planner</label>
+          <div class="seg" id="planner" title="An LLM picks the current objective on a fixed cadence; jev gets it as a fact">
+            <button data-v="1">on</button><button data-v="0">off</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="eyebrow">Actions · legal ones outlined · keys work in manual mode or when paused</div>
+        <div class="actions" id="actions"></div>
+      </section>
+    </div>
+
+    <div style="display:grid;gap:16px">
+      <section class="card">
+        <div class="row">
+          <div class="eyebrow">Achievement status · tracked by code, shown to the model as facts</div>
+          <span class="pill" id="goalMeta" style="margin-left:auto">—</span>
+        </div>
+        <div class="progress" id="goalProgress"></div>
+        <div id="goalNotes"></div>
+        <div class="eyebrow">unlocked · requirements met</div>
+        <div class="goals" id="goalMet"></div>
+        <div class="eyebrow">unlocked · requirements not met</div>
+        <div class="goals" id="goalUnmet"></div>
+        <details>
+          <summary class="hint">locked · done</summary>
+          <div class="hint" id="goalLocked"></div>
+          <div class="hint" id="goalDone"></div>
+        </details>
+      </section>
+
+      <section class="card" id="memCard">
+        <div class="row">
+          <div class="eyebrow" id="memTitle">Agent memory · scratchpad</div>
+          <span class="pill" id="memMeta" style="margin-left:auto">—</span>
+        </div>
+        <pre id="scratchpad" class="notes">(empty — the model has not written notes yet)</pre>
+      </section>
+
+      <section class="card">
+        <div class="eyebrow" id="lastLabel">Last decision</div>
+        <div class="headline" id="headline"><span class="hint">no step yet</span></div>
+        <pre id="reply">—</pre>
+        <details>
+          <summary>Observation the agent sees now</summary>
+          <pre id="obs"></pre>
+        </details>
+      </section>
+      <section class="card">
+        <div class="eyebrow">Timeline · hover a cell for the step's action and reward</div>
+        <div class="timeline" id="timeline"></div>
+        <div class="legend">
+          <span style="--sw: var(--reward)">reward gained (achievement / health)</span>
+          <span style="--sw: var(--accent)">Do / craft / place</span>
+          <span style="--sw: var(--accent); --op: .5">move</span>
+          <span style="--sw: var(--noop)">noop / invalid / no effect</span>
+        </div>
+        <div class="log" id="log"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="tip" role="tooltip"></div>
+<script>
+  const $ = id => document.getElementById(id);
+  const KEYS = { w: 'Move North', s: 'Move South', a: 'Move West', d: 'Move East',
+    ArrowUp: 'Move North', ArrowDown: 'Move South', ArrowLeft: 'Move West', ArrowRight: 'Move East',
+    ' ': 'Do', t: 'Place Table', f: 'Place Furnace', r: 'Place Stone', p: 'Place Plant', z: 'Sleep', e: 'Rest',
+    '1': 'Make Wood Pickaxe', '2': 'Make Stone Pickaxe', '3': 'Make Iron Pickaxe', '4': 'Make Diamond Pickaxe',
+    '5': 'Make Wood Sword', '6': 'Make Stone Sword', '7': 'Make Iron Sword', '8': 'Make Diamond Sword',
+    '>': 'Descend', '<': 'Ascend', n: 'Noop' };
+  const keyFor = a => Object.entries(KEYS).find(([k, v]) => v === a && k.length === 1)?.[0];
+  let ALL = [], legal = new Set(), ws, st = {};
+
+  fetch('/api/actions').then(r => r.json()).then(j => { ALL = j.actions; renderActions(); });
+  function renderActions() {
+    $('actions').innerHTML = ALL.map(a => {
+      const k = keyFor(a); const kb = k ? `<kbd>${k === ' ' ? 'space' : k}</kbd>` : '';
+      return `<button data-a="${a}" class="${legal.has(a) ? 'legal' : ''}">${a}${kb}</button>`;
+    }).join('');
+    $('actions').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a));
+  }
+  function send(o) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); }
+  const JEV = new Set(['jev_macro', 'jev_action_map', 'jev_action_sim']);
+  // segmented button groups: setSeg() reflects server state, clicks send a config message
+  function setSeg(id, v) { $(id).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === String(v)))); }
+  function onSeg(id, fn) { $(id).querySelectorAll('button').forEach(b => b.onclick = () => fn(b.dataset.v)); }
+  function act(a) { send({ cmd: 'act', action: a }); }
+
+  const kind = s => s.reward > 0 ? 'reward' : /^Move /.test(s.action) ? 'move'
+    : /^(Do|Make|Place|Sleep|Rest|Descend|Ascend|Drink|Cast|Shoot|Read|Enchant|Level)/.test(s.action) ? 'do' : 'noop';
+  const esc = t => String(t).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+  function setStatus(text, running) {
+    const el = $('status'); el.textContent = text;
+    el.className = 'status' + (running ? ' running' : '') + (/^error/.test(text) ? ' error' : '');
+  }
+
+  const fmt = n => n.toLocaleString('en-US');
+  const KIND = { llm: 'LLM', jev: 'jev' };
+  function tokRow(k, kind, t) {
+    const avgIn = t.steps ? Math.round(t.input / t.steps) : 0, avgOut = t.steps ? Math.round(t.output / t.steps) : 0;
+    return `<div><div class="k">${k} · ${KIND[kind]}</div><div class="v"><b>${fmt(t.input + t.output)}</b> tok <small>· in ${fmt(t.input)} · out ${fmt(t.output)}</small></div>`
+      + `<div class="v"><small>avg / call</small> ${fmt(avgIn + avgOut)} <small>· in ${fmt(avgIn)} · out ${fmt(avgOut)} · ${t.steps} ${KIND[kind]} calls</small></div></div>`;
+  }
+  function renderTokens(t) {
+    if (!t) return;
+    // one row per model family that has been called (LLM policy / planner, jev); totals across episodes when > 1
+    const rows = [];
+    for (const kind of ['llm', 'jev']) if (t.episode[kind].steps) rows.push(tokRow('this episode', kind, t.episode[kind]));
+    if (t.episodes > 1) for (const kind of ['llm', 'jev']) if (t.total[kind].steps) rows.push(tokRow(`all ${t.episodes} episodes`, kind, t.total[kind]));
+    $('tokens').innerHTML = rows.join('') || '<div><div class="k">tokens</div><div class="v"><small>no model calls this episode yet</small></div></div>';
+  }
+
+  function goalRow(g, ready) {
+    const req = g.reqs.map(r => `<span class="${r.ok ? 'ok' : 'no'}">${esc(r.text)}</span>`).join(' · ');
+    return `<div class="${ready ? 'ready' : 'blocked'}"><span class="mk">${ready ? '✓' : '✗'}</span><span class="t"><b>${esc(g.title)}</b>`
+      + (req ? `<small>${req}</small>` : '') + `</span></div>`;
+  }
+  function renderGoals(g) {
+    if (!g) return;
+    setSeg('goalsOn', g.enabled ? 1 : 0);
+    const open = g.met.length + g.unmet.length;
+    $('goalMeta').textContent = `${g.done.length}/${g.total} done · ${open} unlocked · ${g.locked.length} locked` + (g.enabled ? '' : ' · hidden from model');
+    $('goalProgress').innerHTML = '<i class="done"></i>'.repeat(g.done.length) + '<i class="open"></i>'.repeat(open) + '<i></i>'.repeat(g.locked.length);
+    $('goalNotes').innerHTML = g.notes.map(n => `<div class="urgent">${esc(n)}</div>`).join('');
+    $('goalMet').innerHTML = g.met.map(x => goalRow(x, true)).join('') || '<div class="hint">none</div>';
+    $('goalUnmet').innerHTML = g.unmet.map(x => goalRow(x, false)).join('') || '<div class="hint">none</div>';
+    $('goalLocked').textContent = g.locked.length ? 'locked: ' + g.locked.map(l => `${l.title} (after ${l.after.join(', ')})`).join('; ') : '';
+    $('goalDone').textContent = g.done.length ? 'done: ' + g.done.join(', ') : 'nothing done yet';
+  }
+  function renderMemory(mem) {
+    if (!mem) return;
+    setSeg('histN', mem.history_n);
+    setSeg('scratch', mem.use_scratchpad ? 1 : 0);
+    $('scratchpad').textContent = mem.scratchpad || (mem.use_scratchpad ? '(empty — the model has not written notes yet)' : '(scratchpad disabled)');
+    $('memMeta').textContent = (mem.scratchpad ? `notes from step ${mem.scratchpad_step}` : 'no notes')
+      + ` · ${Math.min(mem.turns_available, mem.history_n)}/${mem.history_n} turns in context`;
+  }
+  function render(m) {
+    st = m;
+    setStatus(m.status, m.running);
+    $('frame').src = m.frame;
+    $('mModel').textContent = m.model || '—'; $('mSeed').textContent = m.seed; $('mRun').textContent = m.run_id || '—';
+    $('mStep').textContent = m.step; $('mReward').textContent = m.total_reward.toFixed(1);
+    $('mAch').textContent = m.achievements; $('mAchMax').textContent = '/' + (m.achievements_total ?? '');
+    $('mScore').textContent = m.score ?? 0; $('mScoreMax').textContent = '/' + (m.max_score ?? '');
+    $('mEnv').textContent = m.variant === 'classic' ? 'Craftax-Classic' : 'Craftax';
+    setSeg('variant', m.variant);
+    if (m.actions && m.actions.join() !== ALL.join()) ALL = m.actions;   // action set depends on the env variant
+    renderTokens(m.tokens);
+    renderMemory(m.memory);
+    renderGoals(m.goals);
+    setSeg('policy', m.policy);
+    setSeg('planner', m.planner ? 1 : 0);
+    // LLM options + memory card: for the LLM policy, and for a jev policy whose LLM planner is on (same memory component)
+    const usesLLM = m.policy === 'llm' || (JEV.has(m.policy) && m.planner);
+    $('llmOpts').hidden = !usesLLM; $('memCard').hidden = !usesLLM;
+    $('goalsLabel').hidden = m.policy !== 'llm'; $('goalsOn').hidden = m.policy !== 'llm';
+    $('llmOptsTitle').textContent = m.policy === 'llm' ? 'LLM options' : 'LLM planner options';
+    $('memTitle').textContent = (m.policy === 'llm' ? 'Agent memory' : 'Planner memory') + ' · scratchpad';
+    $('jevOpts').hidden = !JEV.has(m.policy);
+    if (m.delay != null) { $('delay').value = m.delay; $('delayVal').textContent = (+m.delay).toFixed(1) + ' s'; }
+    $('start').disabled = m.running; $('pause').disabled = !m.running;
+    $('stepBtn').disabled = m.running || m.busy;
+    legal = new Set(m.legal_actions); renderActions();
+    $('obs').textContent = m.obs_long + '\n\n' + m.obs_short;
+    const l = m.last;
+    if (l) {
+      $('lastLabel').textContent = `Decision at step ${l.step}`;
+      $('headline').innerHTML = `<span class="action">${esc(l.action)}</span>`
+        + (l.reward ? `<span class="pill reward">${l.reward > 0 ? '+' : ''}${l.reward.toFixed(1)} reward</span>` : '')
+        + (l.unlocked && l.unlocked.length ? `<span class="pill reward">${l.unlocked.map(esc).join(', ')}</span>` : '')
+        + (l.latency_s ? `<span class="pill">${l.latency_s}s</span>` : '')
+        + (l.input_tokens ? `<span class="pill">LLM ${l.input_tokens}/${l.output_tokens} tok</span>` : '')
+        + (l.jev_input_tokens ? `<span class="pill">jev ${l.jev_input_tokens}/${l.jev_output_tokens ?? 0} tok</span>` : '')
+        + (l.context_turns != null ? `<span class="pill">${l.context_turns} past turns replayed</span>` : '')
+        + (l.done ? `<span class="pill">episode over</span>` : '');
+      $('reply').textContent = l.reply;
+    }
+    $('timeline').innerHTML = m.history.map((s, i) => `<span class="cell ${kind(s)}" data-i="${i}"></span>`).join('');
+    $('log').innerHTML = m.history.slice().reverse().map(s =>
+      `<div><span>${s.step}</span><span>${esc(s.action)}</span><span class="${s.reward ? 'r' : ''}">${s.reward ? (s.reward > 0 ? '+' : '') + s.reward.toFixed(1) : ''}</span><span>${s.achievements}</span><span>${s.latency_s ? s.latency_s + 's' : ''}</span></div>`).join('');
+  }
+
+  function rewardExplain(s) {
+    const parts = [];
+    if (s.unlocked && s.unlocked.length) {
+      const pts = Math.round((s.reward - (s.hp_delta || 0) * 0.1) * 10) / 10;   // 1 / 3 / 5 / 8 points per achievement tier
+      parts.push(`<li>achievement${s.unlocked.length > 1 ? 's' : ''} unlocked: <b>${s.unlocked.map(esc).join(', ')}</b> (+${pts} point${pts === 1 ? '' : 's'})</li>`);
+    }
+    if (s.hp_delta) parts.push(`<li>health ${s.hp_delta > 0 ? 'gained' : 'lost'} ${Math.abs(s.hp_delta)} (${s.hp_delta > 0 ? '+' : '−'}${(Math.abs(s.hp_delta) * 0.1).toFixed(1)})</li>`);
+    if (!parts.length && s.reward) parts.push('<li>reward source not recorded</li>');
+    return parts.length ? `<ul>${parts.join('')}</ul>` : '';
+  }
+  const tip = $('tip');
+  $('timeline').addEventListener('mouseover', e => {
+    const c = e.target.closest('.cell'); if (!c) return;
+    const s = st.history[+c.dataset.i]; if (!s) return;
+    const r = s.reward ? `<span class="r">${s.reward > 0 ? '+' : ''}${s.reward.toFixed(1)} reward</span>` : '<span class="m">no reward</span>';
+    tip.innerHTML = `<div class="m">step ${s.step}</div><div class="a">${esc(s.action)}</div><div>${r}</div>${rewardExplain(s)}`
+      + (s.notes && s.notes.length ? `<div class="m">status notes: ${s.notes.map(n => esc(n.split(/[.:]/)[0])).join('; ')}</div>` : '')
+      + (s.latency_s ? `<div class="m">${s.latency_s}s${s.input_tokens ? ` · LLM ${s.input_tokens} in / ${s.output_tokens} out` : ''}${s.jev_input_tokens ? ` · jev ${s.jev_input_tokens} in / ${s.jev_output_tokens ?? 0} out` : ''}</div>` : '');
+    tip.classList.add('show');
+  });
+  $('timeline').addEventListener('mousemove', e => {
+    const x = Math.min(e.clientX + 14, window.innerWidth - 310), y = e.clientY + 16;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  });
+  $('timeline').addEventListener('mouseleave', () => tip.classList.remove('show'));
+
+  function connect() {
+    ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
+    ws.onmessage = e => {
+      const m = JSON.parse(e.data);
+      if (m.type === 'state') render(m);
+      else if (m.type === 'status') { setStatus(m.status, st.running); $('stepBtn').disabled = m.busy || st.running; }
+    };
+    ws.onclose = () => { setStatus('disconnected — retrying', false); setTimeout(connect, 1500); };
+  }
+  connect();
+
+  $('start').onclick = () => send({ cmd: 'start' });
+  $('pause').onclick = () => send({ cmd: 'pause' });
+  $('stepBtn').onclick = () => send({ cmd: 'step' });
+  $('reset').onclick = () => send({ cmd: 'reset', seed: +$('seed').value });
+  $('resetAll').onclick = () => {
+    if (confirm('Reset the environment and clear all token statistics for this session?')) send({ cmd: 'reset_all', seed: +$('seed').value });
+  };
+  onSeg('policy', v => send({ cmd: 'config', policy: v }));
+  onSeg('variant', v => { if (v !== st.variant) send({ cmd: 'variant', variant: v, seed: +$('seed').value }); });
+  onSeg('histN', v => send({ cmd: 'config', history_n: +v }));
+  onSeg('scratch', v => send({ cmd: 'config', scratchpad: v === '1' }));
+  onSeg('goalsOn', v => send({ cmd: 'config', goals: v === '1' }));
+  onSeg('planner', v => send({ cmd: 'config', planner: v === '1' }));
+  $('delay').oninput = () => { $('delayVal').textContent = (+$('delay').value).toFixed(1) + ' s'; send({ cmd: 'config', delay: +$('delay').value }); };
+  document.addEventListener('keydown', e => {
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+    const a = KEYS[e.key];
+    if (a) { e.preventDefault(); act(a); }
+  });
+</script>
+</body>
+</html>

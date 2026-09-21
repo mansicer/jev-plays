@@ -1,0 +1,12 @@
+# secrets and local environment
+.env
+.venv/
+__pycache__/
+*.pyc
+*.log
+
+# experiment logs and internal process documents are not part of the public repo
+craftax_agent/runs/
+craftax_agent/README.md
+reports/
+CHANGELOG.md

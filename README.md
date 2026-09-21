@@ -1,0 +1,56 @@
+# jev-plays
+
+**A System One model plays Craftax; an LLM sets the goals.** TypeSafe's jev makes every move, GPT-5.6-terra plans.
+
+<p align="center">
+<img src="assets/agents_seed1.gif" alt="Five agents playing the same Craftax-Classic seed side by side" width="100%"> <br> <sub>Same map (seed 1), five agents, real logged episodes replayed at 5 steps per frame. Left to right: jev on raw actions · jev on macro options · jev + GPT-5.6-terra planner · GPT-5.6-terra controlling every step · random.</sub>
+</p>
+
+Can a *System One* model — fast, non-generative, only ever picking among typed options — play a survival and crafting game? What does it take to pair it with an LLM as *System Two*? This repository is the harness, the web UI and the experiments that answer both on [Craftax](https://github.com/MichaelTMatthews/Craftax) (the JAX reimplementation of Crafter), with [jev](https://typesafe.ai) as System One and any OpenAI-compatible model as System Two.
+
+## Results
+
+<p align="center">
+<img src="assets/results.png" alt="Achievements, survival and latency of the five agents" width="100%">
+</p>
+
+| Agent | Who decides each step |
+|---|---|
+| **Jev-macro + GPT-5.6-terra Planner** | the LLM writes an objective, standing rules and a short plan (as facts, on events and every 25 steps); jev picks one macro option per step |
+| **Jev-macro** | jev picks among code-generated macro options: walk to and mine, craft, attack / hold / flee, drink, sleep, dig a shelter, explore… |
+| **Jev-raw** | jev picks among the 17 primitive actions, each annotated with a one-step fact and its simulated outcome |
+| **GPT-5.6-terra control** | the LLM chooses every action, with 5-turn memory, a scratchpad and an achievement board |
+| **Random-macro** | uniform random over the same macro options |
+
+Craftax-Classic, 22 achievements, 3 seeds, 2000-step horizon. Every episode eventually ends in death; the differences of ≤2 achievements are within seed noise. For scale, PPO-RNN trained for 1B environment steps reaches ≥90 % of the maximum reward (≈20/22) on 10 000-step episodes, and humans about 65 %.
+
+## What we learned
+
+- **jev is a literal matcher — and a good one.** It picks the option whose words match a fact in the state: 92–100 % of the time when such a fact exists, and 14.7 achievements against 5.0 for random on the same shuffled option table.
+- **Outside literal matching it has no judgment.** When no fact matches any option it falls back to list position — in fixed-order runs it took the first option 41 % of the time and kept mining stone that no remaining achievement needed. When two options both match, it does not weigh them but follows the stronger wording. It does not evaluate conditions: a plan line saying not to fight unless the mob is adjacent was read as "do not fight". It does not count: told to mine stone once, it mined nine.
+- **The LLM helps only through the right interface.** Given an objective and a plan, jev followed the plan text into danger: with a zombie adjacent its combat response fell from 95–100 % to 48–77 %, and the combined agent scored below jev alone. Given standing rules instead — unconditional, ordered by priority, written in the option vocabulary and refreshed whenever a hostile mob or a status note appears — it fought every time, and the pair beat jev alone (15.7 vs 14.7).
+
+## How it works
+
+<p align="center">
+<img src="assets/architecture.png" alt="Architecture: game → harness facts and candidate table → jev picks; the LLM planner writes objective, rules and plan as facts" width="100%">
+</p>
+
+One rule holds everywhere: **text given to jev states facts, never advice.** Mechanics, numbers, distances and each option's current status are computed by code from the game rules (checked against the Craftax source); deciding what to do with them is the model's job.
+
+## Quick start
+
+Python, a TypeSafe API key for jev, and an OpenAI-compatible endpoint for the planner or the LLM agent.
+
+```bash
+uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python -r requirements.txt
+cp .env.example .env     # TYPESAFE_API_KEY, OPENAI_API_KEY, OPENAI_MODEL_NAME
+craftax_agent/run_server.sh
+```
+
+Open http://localhost:8765: pick the environment and the agent, toggle the LLM planner, and watch it play — each step shows the option table with jev's probabilities, the planner's objective and rules, and token usage; you can also step or drive the game manually.
+
+## License
+
+Apache License 2.0 — see `LICENSE`.
