@@ -51,6 +51,10 @@ craftax_agent/run_server.sh
 
 Open http://localhost:8765: pick the environment and the agent, toggle the LLM planner, and watch it play — each step shows the option table with jev's probabilities, the planner's objective and rules, and token usage; you can also step or drive the game manually.
 
+<p align="center">
+<img src="assets/webui.png" alt="The web UI after 71 steps of Jev-Macro with the LLM planner: game view, achievement board, planner memory, the step's option table with jev's probabilities, and the timeline" width="100%">
+</p>
+
 ## License
 
 Apache License 2.0 — see `LICENSE`.
