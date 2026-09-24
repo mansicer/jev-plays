@@ -1,0 +1,363 @@
+{
+ "source": "cli",
+ "run_id": "20260921-141343-classic-s1",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 1,
+ "steps": 527,
+ "achievements": 19,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Eat Cow",
+  "Collect Sapling",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Place Plant",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Make Stone Pickaxe",
+  "Make Stone Sword",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron",
+  "Make Iron Pickaxe",
+  "Make Iron Sword"
+ ],
+ "reward": 18.1,
+ "wall_s": 664.2,
+ "mean_step_s": 1.252,
+ "mean_jev_ms": 311,
+ "jev_input_tokens": 754663,
+ "sources": {
+  "jev": 406,
+  "code:fallback": 28,
+  "code:asleep": 93
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  10,
+  3,
+  2,
+  0,
+  3,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 520,
+ "sched": [],
+ "llm_calls": 55,
+ "mean_llm_ms": 8949,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 333924,
+ "llm_output_tokens": 30743,
+ "triggers": {
+  "start": 1,
+  "reached": 17,
+  "board": 1,
+  "expired": 4
+ },
+ "objective_sources": {
+  "llm": 55,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   6,
+   "reached",
+   "Place Table"
+  ],
+  [
+   11,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   14,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   20,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   21,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   33,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   40,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   44,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   69,
+   "expired",
+   "Make Iron Pickaxe"
+  ],
+  [
+   80,
+   "event",
+   "Make Stone Sword"
+  ],
+  [
+   81,
+   "reached",
+   "Defeat Zombie"
+  ],
+  [
+   86,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   111,
+   "expired",
+   "Place Stone"
+  ],
+  [
+   112,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   117,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   126,
+   "event",
+   "Collect Drink"
+  ],
+  [
+   139,
+   "reached",
+   "Collect Sapling"
+  ],
+  [
+   144,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   149,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   152,
+   "board",
+   "Collect Sapling"
+  ],
+  [
+   157,
+   "event",
+   "Defeat Skeleton"
+  ],
+  [
+   166,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   186,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   211,
+   "expired",
+   "Make Iron Pickaxe"
+  ],
+  [
+   217,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   242,
+   "expired",
+   "Make Wood Sword"
+  ],
+  [
+   244,
+   "reached",
+   "Wake Up"
+  ],
+  [
+   281,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   286,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   297,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   345,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   363,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   372,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   396,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   404,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   410,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   428,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   433,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   442,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   445,
+   "reached",
+   "Make Iron Sword"
+  ],
+  [
+   450,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   455,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   459,
+   "reached",
+   "Place Plant"
+  ],
+  [
+   460,
+   "reached",
+   "Make Iron Sword"
+  ],
+  [
+   467,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   472,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   477,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   487,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   492,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   497,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   502,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   511,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   521,
+   "reached",
+   "Defeat Skeleton"
+  ],
+  [
+   526,
+   "event",
+   "Defeat Skeleton"
+  ]
+ ]
+}

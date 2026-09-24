@@ -1,0 +1,50 @@
+{
+ "source": "cli",
+ "run_id": "20260921-224200-classic-s2",
+ "variant": "classic",
+ "policy": "jev_action_sim",
+ "name": "Jev-Action-Sim",
+ "chooser": null,
+ "objective_source": null,
+ "planner": false,
+ "seed": 2,
+ "steps": 351,
+ "achievements": 16,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Eat Cow",
+  "Collect Sapling",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Place Plant",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Defeat Skeleton",
+  "Make Stone Pickaxe",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal"
+ ],
+ "reward": 15.1,
+ "wall_s": 128.5,
+ "mean_step_s": 0.36,
+ "mean_jev_ms": 360,
+ "jev_input_tokens": 761736,
+ "sources": {
+  "jev": 280,
+  "code:asleep": 71
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  6,
+  5,
+  3,
+  2,
+  0
+ ],
+ "last_unlock_step": 350
+}

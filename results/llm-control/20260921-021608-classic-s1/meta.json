@@ -1,0 +1,40 @@
+{
+ "source": "cli",
+ "run_id": "20260921-021608-classic-s1",
+ "variant": "classic",
+ "policy": "llm",
+ "planner": false,
+ "seed": 1,
+ "steps": 93,
+ "achievements": 12,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Make Stone Pickaxe",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron"
+ ],
+ "reward": 11.1,
+ "wall_s": 324.3,
+ "mean_step_s": 3.46,
+ "mean_jev_ms": 0,
+ "jev_input_tokens": 0,
+ "sources": {
+  "llm": 93
+ },
+ "escalations": 0,
+ "died": true,
+ "llm_input_tokens": 325464,
+ "llm_output_tokens": 15919,
+ "history_n": 5,
+ "scratchpad": true,
+ "goals": true,
+ "model": "gpt-5.6-terra"
+}

@@ -1,5 +1,6 @@
-craftax>=1.6.1
-jax>=0.4.38
+craftax==1.6.1
+jax==0.4.38
+jaxlib==0.4.38
 typesafe-sdk>=0.7.0
 openai>=3.16
 python-dotenv>=1.2

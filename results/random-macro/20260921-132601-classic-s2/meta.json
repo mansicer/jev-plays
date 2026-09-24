@@ -1,0 +1,53 @@
+{
+ "source": "cli",
+ "run_id": "20260921-132601-classic-s2",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Random-Macro",
+ "chooser": "random",
+ "objective_source": "llm",
+ "planner": false,
+ "seed": 2,
+ "steps": 95,
+ "achievements": 3,
+ "unlocked": [
+  "Collect Sapling",
+  "Place Plant",
+  "Wake Up"
+ ],
+ "reward": 2.1,
+ "wall_s": 4.9,
+ "mean_step_s": 0.004,
+ "mean_jev_ms": 0,
+ "jev_input_tokens": 0,
+ "sources": {
+  "code:random": 77,
+  "code:asleep": 18
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  3,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 47,
+ "sched": []
+}

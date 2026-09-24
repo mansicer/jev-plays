@@ -1,0 +1,155 @@
+{
+ "source": "cli",
+ "run_id": "20260921-132502-classic-s2",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 2,
+ "steps": 132,
+ "achievements": 12,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Make Stone Pickaxe",
+  "Make Stone Sword",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron"
+ ],
+ "reward": 11.1,
+ "wall_s": 160.2,
+ "mean_step_s": 1.182,
+ "mean_jev_ms": 378,
+ "jev_input_tokens": 199087,
+ "sources": {
+  "jev": 122,
+  "code:fallback": 10
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  10,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 120,
+ "sched": [],
+ "llm_calls": 15,
+ "mean_llm_ms": 7010,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 70746,
+ "llm_output_tokens": 6606,
+ "triggers": {
+  "start": 1,
+  "reached": 12,
+  "board": 0,
+  "expired": 2
+ },
+ "objective_sources": {
+  "llm": 15,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   1,
+   "reached",
+   "Place Table"
+  ],
+  [
+   4,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   9,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   14,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   15,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   32,
+   "reached",
+   "Make Stone Sword"
+  ],
+  [
+   42,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   56,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   61,
+   "reached",
+   "Place Stone"
+  ],
+  [
+   62,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   87,
+   "expired",
+   "Make Iron Pickaxe"
+  ],
+  [
+   112,
+   "expired",
+   "Defeat Zombie"
+  ],
+  [
+   114,
+   "reached",
+   "Collect Drink"
+  ],
+  [
+   121,
+   "reached",
+   "Collect Sapling"
+  ]
+ ]
+}

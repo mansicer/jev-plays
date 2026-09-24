@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: jev-plays
+Version: 0.1.0
+Summary: A System One model (jev) plays Craftax; an LLM sets the goals.
+License-Expression: Apache-2.0
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: craftax==1.6.1
+Requires-Dist: jax==0.4.38
+Requires-Dist: jaxlib==0.4.38
+Requires-Dist: typesafe-sdk>=0.7.0
+Requires-Dist: openai>=3.16
+Requires-Dist: python-dotenv>=1.2
+Requires-Dist: numpy>=2.0
+Requires-Dist: pillow>=12.0
+Requires-Dist: fastapi>=0.141
+Requires-Dist: uvicorn[standard]>=0.53
+Requires-Dist: websockets>=17.0
+Dynamic: license-file
+
 # jev-plays
 
 **A System One model plays Craftax; an LLM sets the goals.** TypeSafe's jev makes every move, GPT-5.6-terra plans.

@@ -1,0 +1,39 @@
+[project]
+name = "jev-plays"
+version = "0.1.0"
+description = "A System One model (jev) plays Craftax; an LLM sets the goals."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = [
+    "craftax==1.6.1",
+    "jax==0.4.38",
+    "jaxlib==0.4.38",
+    "typesafe-sdk>=0.7.0",
+    "openai>=3.16",
+    "python-dotenv>=1.2",
+    "numpy>=2.0",
+    "pillow>=12.0",
+    "fastapi>=0.141",
+    "uvicorn[standard]>=0.53",
+    "websockets>=17.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "slow: the legality audit against the game source (~3 min, no API key)",
+    "jev: makes real Jev API calls (needs TYPESAFE_API_KEY in .env; skipped otherwise)",
+]
+addopts = "-m 'not slow and not jev'"
+
+[tool.setuptools]
+packages = ["craftax_agent", "craftax_agent.server"]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"

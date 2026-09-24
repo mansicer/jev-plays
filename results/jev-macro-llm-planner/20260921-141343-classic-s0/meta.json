@@ -1,0 +1,170 @@
+{
+ "source": "cli",
+ "run_id": "20260921-141343-classic-s0",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 0,
+ "steps": 186,
+ "achievements": 11,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Collect Stone",
+  "Make Stone Pickaxe",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron",
+  "Make Iron Pickaxe"
+ ],
+ "reward": 10.1,
+ "wall_s": 194.1,
+ "mean_step_s": 1.028,
+ "mean_jev_ms": 330,
+ "jev_input_tokens": 271064,
+ "sources": {
+  "jev": 171,
+  "code:fallback": 2,
+  "code:asleep": 13
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  8,
+  3,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 169,
+ "sched": [],
+ "llm_calls": 18,
+ "mean_llm_ms": 7143,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 93525,
+ "llm_output_tokens": 7669,
+ "triggers": {
+  "start": 1,
+  "reached": 10,
+  "board": 0,
+  "expired": 1
+ },
+ "objective_sources": {
+  "llm": 18,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   5,
+   "reached",
+   "Place Table"
+  ],
+  [
+   27,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   44,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   47,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   48,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   70,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   78,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   81,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   106,
+   "expired",
+   "Collect Drink"
+  ],
+  [
+   109,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   131,
+   "reached",
+   "Collect Sapling"
+  ],
+  [
+   150,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   156,
+   "event",
+   "Wake Up"
+  ],
+  [
+   170,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   175,
+   "event",
+   "Place Stone"
+  ],
+  [
+   180,
+   "event",
+   "Place Stone"
+  ],
+  [
+   185,
+   "event",
+   "Defeat Zombie"
+  ]
+ ]
+}

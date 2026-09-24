@@ -1,0 +1,179 @@
+{
+ "source": "cli",
+ "run_id": "20260921-132502-classic-s0",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 0,
+ "steps": 237,
+ "achievements": 15,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Collect Sapling",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Place Plant",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Make Stone Pickaxe",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron",
+  "Make Iron Pickaxe"
+ ],
+ "reward": 14.1,
+ "wall_s": 205.2,
+ "mean_step_s": 0.848,
+ "mean_jev_ms": 313,
+ "jev_input_tokens": 303596,
+ "sources": {
+  "jev": 195,
+  "code:fallback": 8,
+  "code:asleep": 34
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  11,
+  2,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 204,
+ "sched": [],
+ "llm_calls": 19,
+ "mean_llm_ms": 6595,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 94533,
+ "llm_output_tokens": 7409,
+ "triggers": {
+  "start": 1,
+  "reached": 15,
+  "board": 0,
+  "expired": 3
+ },
+ "objective_sources": {
+  "llm": 19,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   5,
+   "reached",
+   "Place Table"
+  ],
+  [
+   27,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   44,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   47,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   48,
+   "reached",
+   "Place Stone"
+  ],
+  [
+   52,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   66,
+   "reached",
+   "Defeat Zombie"
+  ],
+  [
+   80,
+   "reached",
+   "Collect Drink"
+  ],
+  [
+   82,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   88,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   91,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   116,
+   "expired",
+   "Make Iron Pickaxe"
+  ],
+  [
+   120,
+   "reached",
+   "Wake Up"
+  ],
+  [
+   155,
+   "reached",
+   "Collect Sapling"
+  ],
+  [
+   180,
+   "expired",
+   "Collect Sapling"
+  ],
+  [
+   204,
+   "reached",
+   "Place Plant"
+  ],
+  [
+   205,
+   "reached",
+   "Eat Cow"
+  ],
+  [
+   230,
+   "expired",
+   "Eat Cow"
+  ]
+ ]
+}

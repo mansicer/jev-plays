@@ -1,0 +1,241 @@
+{
+ "source": "cli",
+ "run_id": "20260921-141343-classic-s2",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 2,
+ "steps": 220,
+ "achievements": 17,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Collect Sapling",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Place Plant",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Make Stone Pickaxe",
+  "Make Stone Sword",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron",
+  "Make Iron Pickaxe"
+ ],
+ "reward": 16.1,
+ "wall_s": 327.4,
+ "mean_step_s": 1.474,
+ "mean_jev_ms": 364,
+ "jev_input_tokens": 367239,
+ "sources": {
+  "jev": 197,
+  "code:fallback": 15,
+  "code:asleep": 8
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  10,
+  7,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 195,
+ "sched": [],
+ "llm_calls": 31,
+ "mean_llm_ms": 7821,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 173033,
+ "llm_output_tokens": 14725,
+ "triggers": {
+  "start": 1,
+  "reached": 16,
+  "board": 0,
+  "expired": 1
+ },
+ "objective_sources": {
+  "llm": 31,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   1,
+   "reached",
+   "Place Table"
+  ],
+  [
+   4,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   9,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   14,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   20,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   41,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   43,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   46,
+   "reached",
+   "Place Stone"
+  ],
+  [
+   50,
+   "reached",
+   "Make Wood Sword"
+  ],
+  [
+   55,
+   "event",
+   "Defeat Zombie"
+  ],
+  [
+   80,
+   "expired",
+   "Make Iron Pickaxe"
+  ],
+  [
+   99,
+   "event",
+   "Make Stone Sword"
+  ],
+  [
+   100,
+   "reached",
+   "Defeat Zombie"
+  ],
+  [
+   105,
+   "event",
+   "Defeat Zombie"
+  ],
+  [
+   110,
+   "reached",
+   "Make Iron Pickaxe"
+  ],
+  [
+   126,
+   "event",
+   "Make Iron Pickaxe"
+  ],
+  [
+   129,
+   "reached",
+   "Collect Sapling"
+  ],
+  [
+   136,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   143,
+   "event",
+   "Collect Sapling"
+  ],
+  [
+   147,
+   "reached",
+   "Place Plant"
+  ],
+  [
+   148,
+   "reached",
+   "Wake Up"
+  ],
+  [
+   157,
+   "event",
+   "Collect Drink"
+  ],
+  [
+   172,
+   "event",
+   "Collect Drink"
+  ],
+  [
+   186,
+   "event",
+   "Collect Drink"
+  ],
+  [
+   187,
+   "reached",
+   "Make Wood Sword"
+  ],
+  [
+   196,
+   "reached",
+   "Eat Cow"
+  ],
+  [
+   201,
+   "event",
+   "Make Iron Sword"
+  ],
+  [
+   208,
+   "event",
+   "Collect Diamond"
+  ],
+  [
+   213,
+   "event",
+   "Eat Cow"
+  ],
+  [
+   218,
+   "event",
+   "Eat Cow"
+  ]
+ ]
+}

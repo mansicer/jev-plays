@@ -1,0 +1,138 @@
+{
+ "source": "cli",
+ "run_id": "20260921-132502-classic-s1",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "name": "Jev-Macro+LLM",
+ "chooser": "jev",
+ "objective_source": "llm",
+ "planner": true,
+ "seed": 1,
+ "steps": 102,
+ "achievements": 10,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Make Stone Pickaxe",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron"
+ ],
+ "reward": 9.1,
+ "wall_s": 105.7,
+ "mean_step_s": 0.998,
+ "mean_jev_ms": 378,
+ "jev_input_tokens": 153516,
+ "sources": {
+  "jev": 89,
+  "code:fallback": 13
+ },
+ "escalations": 0,
+ "died": true,
+ "ach_per_100": [
+  10,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "last_unlock_step": 76,
+ "sched": [],
+ "llm_calls": 12,
+ "mean_llm_ms": 5209,
+ "history_n": 5,
+ "scratchpad": true,
+ "llm_input_tokens": 53454,
+ "llm_output_tokens": 3961,
+ "triggers": {
+  "start": 1,
+  "reached": 10,
+  "board": 0,
+  "expired": 1
+ },
+ "objective_sources": {
+  "llm": 12,
+  "code:objective-default": 0
+ },
+ "objectives": [
+  [
+   0,
+   "start",
+   "Collect Wood"
+  ],
+  [
+   6,
+   "reached",
+   "Place Table"
+  ],
+  [
+   11,
+   "reached",
+   "Make Wood Pickaxe"
+  ],
+  [
+   14,
+   "reached",
+   "Collect Stone"
+  ],
+  [
+   20,
+   "reached",
+   "Place Furnace"
+  ],
+  [
+   21,
+   "reached",
+   "Make Stone Pickaxe"
+  ],
+  [
+   46,
+   "expired",
+   "Make Stone Pickaxe"
+  ],
+  [
+   61,
+   "reached",
+   "Make Wood Sword"
+  ],
+  [
+   62,
+   "reached",
+   "Collect Iron"
+  ],
+  [
+   69,
+   "reached",
+   "Defeat Zombie"
+  ],
+  [
+   73,
+   "reached",
+   "Collect Coal"
+  ],
+  [
+   77,
+   "reached",
+   "Make Iron Pickaxe"
+  ]
+ ]
+}

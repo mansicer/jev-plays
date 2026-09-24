@@ -1,0 +1,42 @@
+{
+ "source": "cli",
+ "run_id": "20260921-112719-classic-s2",
+ "variant": "classic",
+ "policy": "jev_macro",
+ "planner": false,
+ "seed": 2,
+ "steps": 369,
+ "achievements": 16,
+ "unlocked": [
+  "Collect Wood",
+  "Place Table",
+  "Collect Drink",
+  "Make Wood Pickaxe",
+  "Make Wood Sword",
+  "Defeat Zombie",
+  "Collect Stone",
+  "Place Stone",
+  "Defeat Skeleton",
+  "Make Stone Pickaxe",
+  "Make Stone Sword",
+  "Wake Up",
+  "Place Furnace",
+  "Collect Coal",
+  "Collect Iron",
+  "Make Iron Pickaxe"
+ ],
+ "reward": 15.1,
+ "wall_s": 68.7,
+ "mean_step_s": 0.182,
+ "mean_jev_ms": 178,
+ "jev_input_tokens": 228735,
+ "sources": {
+  "jev": 174,
+  "code:fallback": 32,
+  "code:commit:shelter": 74,
+  "code:asleep": 81,
+  "code:commit:water": 8
+ },
+ "escalations": 0,
+ "died": true
+}
