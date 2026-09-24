@@ -887,7 +887,7 @@ class ObjectivePlanner:
       reached  the objective's achievement is now unlocked
       board    the set of unlocked-not-done goals changed since the objective was set (any new achievement)
       expired  `ttl` steps since the last call (sleeping steps count; the call happens on the first awake step)
-    Never triggered by low confidence, stuck detection, danger or hostiles: emergencies stay with code invariants + jev.
+    Never triggered by low confidence, stuck detection or hostiles: emergencies stay with code invariants + jev.
 
     Code guarantees: the objective is always one of the board's unlocked-not-done goals. An invalid / unparsable /
     failed LLM answer -> first unlocked main-line goal in GOALS order (source "code:objective-default").
@@ -1155,7 +1155,7 @@ class JevMacroPolicy:
             self.planner.tick()
 
     def questions(self, macros: list[Macro], facts: dict):
-        from typesafe_sdk import Choice, Noul
+        from typesafe_sdk import Choice
         instr = ("You are playing Crafter (2D survival): unlock achievements while staying alive; the game ends "
                  "when health reaches 0. `achievements` and `notes` are tracked by the game harness; `recent` lists "
                  "what the last options did."
@@ -1163,8 +1163,6 @@ class JevMacroPolicy:
                  + " Which option should be executed this step?")
         return {
             "macro": Choice(instructions=instr, criteria={mm.key: mm.desc for mm in macros}),
-            "danger": Noul(instructions="Will the player lose health within the next 2 steps? Use `hostile mobs in view`, "
-                                        "`player` and `notes`."),
         }
 
     def state(self, facts: dict) -> dict:
@@ -1176,7 +1174,7 @@ class JevMacroPolicy:
             why = "asleep" if bool(self.env.state.is_sleeping) else "resting"
             self.stuck = 0
             return "Noop", f"[code:{why}] wait -> Noop (no jev call while {why})", {
-                "latency_s": 0.0, "macro": "wait", "source": f"code:{why}", "confidence": 1.0, "danger": 0.0,
+                "latency_s": 0.0, "macro": "wait", "source": f"code:{why}", "confidence": 1.0,
                 "jev_ms": 0, "jev_input_tokens": 0, "jev_output_tokens": 0, "n_options": 1, "probabilities": {}, "stuck": 0, "goal_top": why,
                 "objective": self.objective.title if self.objective else None, "objective_key": self.objective.key if self.objective else None}
         t0 = time.perf_counter()
@@ -1228,7 +1226,7 @@ class JevMacroPolicy:
                 mm, source = macros[int(self._rng.integers(len(macros)))], "code:random"
             met = facts["achievements"]["unlocked, requirements met now"]
             info = {"latency_s": round(time.perf_counter() - t0, 2), "macro": mm.key, "source": source, "confidence": 1.0,
-                    "danger": 0.0, "jev_ms": 0, "jev_input_tokens": 0, "jev_output_tokens": 0, "probabilities": {},
+                    "jev_ms": 0, "jev_input_tokens": 0, "jev_output_tokens": 0, "probabilities": {},
                     "stuck": self.stuck, "goal_top": met[0] if met else "", **base_info}
             reply = (f"[{self.name} {source}] {mm.key} -> {mm.action}\noptions ({len(macros)}): " + "; ".join(x.key for x in macros)
                      + (f"\nobjective: {obj.text}" if obj else "") + (f"\nplanner rules: {' | '.join(rules)}" if rules else "")
@@ -1240,14 +1238,8 @@ class JevMacroPolicy:
         resp = self._client.system_one(state=self.state(facts), questions=self.questions(macros, facts))
         jev_ms = (time.perf_counter() - t0j) * 1000
         ans = resp.choices["macro"]
-        danger = resp.nouls["danger"].noul
         probs = sorted(ans.probabilities.items(), key=lambda kv: -kv[1])
         chosen, conf, source = ans.choice, float(ans.confidence), "jev"
-
-        # code-side safety override: high danger + adjacent hostile + low health -> flee if possible
-        hp = float(self.env.state.player_health)
-        if danger > 0.7 and "flee" in by_key and hp <= 4 and chosen not in ("flee", "attack"):
-            chosen, source = "flee", "code:danger-override"
 
         # confidence gate
         stuck = self.stuck >= 4
@@ -1257,11 +1249,11 @@ class JevMacroPolicy:
             chosen, source = probs[0][0], "code:invalid-fix"
         mm = by_key[chosen]
         top3 = ", ".join(f"{k} {v:.2f}" for k, v in probs[:3])
-        reply = (f"[{self.name} {source}] {mm.key} -> {mm.action}   conf={conf:.2f} danger={danger:.2f} jev={jev_ms:.0f}ms\n"
+        reply = (f"[{self.name} {source}] {mm.key} -> {mm.action}   conf={conf:.2f} jev={jev_ms:.0f}ms\n"
                  f"top: {top3}\noptions ({len(macros)}): " + "; ".join(x.key for x in macros))
         met = facts["achievements"]["unlocked, requirements met now"]
         info = {"latency_s": round(time.perf_counter() - t0, 2), "macro": mm.key, "source": source,
-                "confidence": round(conf, 3), "danger": round(danger, 3), "jev_ms": round(jev_ms),
+                "confidence": round(conf, 3), "jev_ms": round(jev_ms),
                 "jev_input_tokens": resp.usage.input_tokens, "jev_output_tokens": resp.usage.output_tokens,
                 "probabilities": {k: round(v, 3) for k, v in probs[:5]}, "stuck": self.stuck,
                 "goal_top": met[0] if met else "", "chosen_serves": mm.goal_match, **base_info}
@@ -1598,7 +1590,7 @@ class JevActionPolicy:
         if env.incapacitated():   # asleep or (full) resting: the game replaces every action by NOOP (classic :1660, full :3011-3012)
             why = "asleep" if bool(env.state.is_sleeping) else "resting"
             return "Noop", f"[code:{why}]", {"latency_s": 0.0, "macro": "Noop", "source": f"code:{why}", "confidence": 1.0,
-                                             "danger": 0.0, "jev_ms": 0, "jev_input_tokens": 0, "jev_output_tokens": 0, "n_options": 1,
+                                             "jev_ms": 0, "jev_input_tokens": 0, "jev_output_tokens": 0, "n_options": 1,
                                              "probabilities": {}, "stuck": 0, "plan": "", "goal_top": why}
         obs = env.observe()["text"]
         legal = env.legal_actions()
@@ -1642,7 +1634,7 @@ class JevActionPolicy:
         reply = (f"[{self.name}] {key} -> {action}   conf={ans.confidence:.2f} jev={jev_ms:.0f}ms\ntop: "
                  + ", ".join(f"{k} {v:.2f}" for k, v in probs[:3]))
         info = {"latency_s": round(time.perf_counter() - t0, 2), "macro": key, "source": "jev",
-                "confidence": round(float(ans.confidence), 3), "danger": 0.0, "jev_ms": round(jev_ms),
+                "confidence": round(float(ans.confidence), 3), "jev_ms": round(jev_ms),
                 "jev_input_tokens": resp.usage.input_tokens, "jev_output_tokens": resp.usage.output_tokens, "n_options": len(keyed),
                 "probabilities": {k: round(v, 3) for k, v in probs[:5]}, "stuck": 0, "plan": "", "goal_top": ""}
         if self.planner:
