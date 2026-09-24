@@ -1,5 +1,7 @@
 # jev-plays
 
+[![tests](https://github.com/mansicer/jev-plays/actions/workflows/test.yml/badge.svg)](https://github.com/mansicer/jev-plays/actions/workflows/test.yml)
+
 **A System One model plays Craftax; an LLM sets the goals.** TypeSafe's jev makes every move, GPT-5.6-terra plans.
 
 <p align="center">
